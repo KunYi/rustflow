@@ -1,0 +1,55 @@
+package iiot:flow@0.1.0;
+
+interface meta {
+    use types.{value-kind};
+
+    accepted-input-types: func() -> list<value-kind>;
+    output-type:          func() -> value-kind;
+    name:                 func() -> string;
+    version:              func() -> string;
+}
+
+interface node {
+    use types.{flow-msg, node-output};
+
+    process:     func(msg: flow-msg) -> node-output;
+    process-raw: func(tag-id: u32, msg-id: u32, raw-bytes: list<u8>) -> node-output;
+    save-state:  func() -> list<u8>;
+    load-state:  func(state: list<u8>);
+}
+
+world flow-node {
+    export meta;
+    export node;
+}
+
+world flow-node-with-host {
+    import host-api;
+    export meta;
+    export node;
+}
+
+world fused-pipeline {
+    import host-api;
+
+    export pipeline: interface {
+        // 單次呼叫跑完整個 Source → A → B → C → Sink
+        // 輸入：protocol driver 的 raw protobuf bytes + Host 已分配的 id
+        // 輸出：encode 完的 protobuf bytes（空代表被 filter 掉）
+        run: func(
+            tag-id:    u32,
+            msg-id:    u32,
+            raw-bytes: list<u8>
+        ) -> list<u8>;
+
+        // 取得 Pipeline 內所有 Node 的狀態（用於 snapshot）
+        save-states: func() -> list<u8>;
+
+        // 還原所有 Node 狀態（熱更新 / migration 用）
+        load-states: func(states: list<u8>);
+
+        // Pipeline 識別
+        name:    func() -> string;
+        version: func() -> string;
+    }
+}

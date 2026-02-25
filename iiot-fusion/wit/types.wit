@@ -1,0 +1,49 @@
+package iiot:flow@0.1.0;
+
+interface types {
+
+    variant tag-value {
+        bool-val(bool),
+        i8-val(s8),
+        u8-val(u8),
+        i16-val(s16),
+        u16-val(u16),
+        i32-val(s32),
+        u32-val(u32),
+        i64-val(s64),
+        u64-val(u64),
+        f32-val(f32),
+        f64-val(f64),
+        short-str(string),
+        blob(list<u8>),
+    }
+
+    enum value-kind {
+        bool-val,
+        i8-val,
+        u8-val,
+        i16-val,
+        u16-val,
+        i32-val,
+        u32-val,
+        i64-val,
+        u64-val,
+        f32-val,
+        f64-val,
+        short-str,
+        blob,
+        any,
+    }
+
+    record flow-msg {
+        tag-id:    u32,
+        msg-id:    u32,
+        value:     tag-value,
+        timestamp: u64,
+        quality:   u8,
+    }
+
+    record node-output {
+        msgs: list<flow-msg>,
+    }
+}

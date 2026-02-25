@@ -1,0 +1,7 @@
+package iiot:flow@0.1.0;
+
+interface host-api {
+    get-tag-attr:  func(tag-id: u32, key: string) -> option<string>;
+    get-eng-range: func(tag-id: u32) -> option<tuple<f64, f64>>;
+    log-debug:     func(node-name: string, msg: string);
+}

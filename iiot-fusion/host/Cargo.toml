@@ -1,0 +1,14 @@
+[package]
+name    = "iiot-flow-host"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "iiot-flow-host"
+path = "src/main.rs"
+
+[dependencies]
+wasmtime      = { version = "42.0.0", features = ["component-model"] }
+wasmtime-wasi = "42.0.0"
+anyhow        = "1"
+prost         = "0.14.3"

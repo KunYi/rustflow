@@ -1,0 +1,14 @@
+[package]
+name    = "sink-node"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wit-bindgen = "0.53.1"
+# prost no_std：在 WASM 內做 Protobuf encode
+prost = { version = "0.14.3", default-features = false, features = ["derive"] }
+
+# profile 繼承 workspace [profile.release]

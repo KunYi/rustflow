@@ -1,0 +1,12 @@
+[package]
+name    = "node-a"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wit-bindgen = "0.53.1"
+# 純計算 Node，不需要 prost
+# profile 繼承 workspace [profile.release]

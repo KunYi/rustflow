@@ -1,0 +1,4 @@
+# 所有 nodes/ 下的 crate 預設編譯成 wasm32-wasip2
+# 這樣 `cargo build --release` 就等同 `cargo build --target wasm32-wasip2 --release`
+[build]
+target = "wasm32-wasip2"

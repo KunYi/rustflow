@@ -1,0 +1,23 @@
+[workspace]
+members = [
+    "host",
+    "nodes/source-node",
+    "nodes/node-a",
+    "nodes/node-b",
+    "nodes/node-c",
+    "nodes/sink-node",
+]
+resolver = "2"
+
+# WASM Node 用：優化體積
+[profile.release]
+opt-level = "s"
+lto       = true
+strip     = true
+
+# Host 用：優化速度（cargo build -p iiot-flow-host --profile release-host）
+[profile.release-host]
+inherits  = "release"
+opt-level = 3
+strip     = true
+lto       = "thin"
