@@ -6,14 +6,16 @@
 //   FlowNodeWithHost  ← flow-node-with-host (Sink)
 //
 // Host Function (host-api) 透過 Linker::func_wrap 手動掛載
-use wasmtime::error::{ Context, Result };
-// use anyhow::bail;
+// use wasmtime::error::{ Context, Result };
+
+use anyhow::{ bail, Context, Result };
+use wasmtime::error::Context as _;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use std::sync::atomic::{AtomicU32, Ordering};
 use std::time::Instant;
 use wasmtime::component::{bindgen, Component, Linker, ResourceTable };
-use wasmtime::{ bail, Config, Engine, Store };
+use wasmtime::{ Config, Engine, Store };
 use wasmtime_wasi::{WasiCtx, WasiCtxBuilder, WasiView, WasiCtxView};
 
 // ── bindings for flow-node world (Source, Node A/B/C) ────────────────────────
@@ -126,9 +128,12 @@ impl WasiView for HostState {
 }
 
 fn make_store(engine: &Engine, registry: Arc<RwLock<TagRegistry>>) -> Store<HostState> {
-    let wasi = WasiCtxBuilder::new().inherit_stdio().build();
+    let wasi = WasiCtxBuilder::new().inherit_stdio().max_random_size(u64::MAX).build();
     let table: ResourceTable = ResourceTable::new();
-    Store::new(engine, HostState { wasi, table, registry })
+    // Store::new(engine, HostState { wasi, table, registry })
+    let mut store = Store::new(engine, HostState { wasi, table, registry });
+    store.set_hostcall_fuel(usize::MAX);
+    store
 }
 
 // ════════════════════════════════════════════════════════════════════════════

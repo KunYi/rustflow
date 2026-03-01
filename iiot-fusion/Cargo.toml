@@ -20,4 +20,6 @@ strip     = true
 inherits  = "release"
 opt-level = 3
 strip     = true
-lto       = "thin"
+codegen-units = 1
+lto = true
+#lto       = "thin"

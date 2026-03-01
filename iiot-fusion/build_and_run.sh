@@ -38,8 +38,8 @@ done
 # ── 編譯 Host（native，用 release profile）────────────────────────
 echo ""
 echo "▶ 編譯 Host (native x86_64)..."
-# cargo build -p iiot-flow-host --release 2>&1
-cargo build -p iiot-flow-host --profile release-host 2>&1
+cargo build -p iiot-flow-host --release 2>&1
+# cargo build -p iiot-flow-host --profile release-host 2>&1
 echo "  ✅ target/release/iiot-flow-host"
 
 # ── 執行 ─────────────────────────────────────────────────────────
